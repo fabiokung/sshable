@@ -64,7 +64,7 @@ func (r *Rendezvous) rendezvousConn() (net.Conn, error) {
 	if err != nil {
 		return nil, err
 	}
-	if _, err = fmt.Fprintln(conn, r.Address.Path); err != nil {
+	if _, err = fmt.Fprintln(conn, r.Address.Path[1:]); err != nil {
 		conn.Close()
 		return nil, err
 	}
