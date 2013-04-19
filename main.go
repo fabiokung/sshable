@@ -9,6 +9,7 @@ import (
 	"path"
 	"strings"
 	"syscall"
+	"time"
 )
 
 const SSHD_PORT = 5000
@@ -29,7 +30,10 @@ func connectWithRendezvous() {
 		log.Fatal(err)
 		return
 	}
-	r.Connect()
+
+	for ; ; time.Sleep(10 * time.Second) {
+		r.Connect()
+	}
 }
 
 func spawnSSHD(username string) error {

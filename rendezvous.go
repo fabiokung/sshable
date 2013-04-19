@@ -22,7 +22,7 @@ func NewRendezvous(addr string) (*Rendezvous, error) {
 
 func (r *Rendezvous) Connect() error {
 	conn, err := r.rendezvousConn()
-	if err != nil  {
+	if err != nil {
 		return err
 	}
 	defer conn.Close()
