@@ -11,6 +11,8 @@ import (
 	"syscall"
 )
 
+const SSHD_PORT = 5000
+
 func connectWithRendezvous() {
 	hostname, err := exec.Command("hostname").Output()
 	if err != nil {
@@ -22,8 +24,12 @@ func connectWithRendezvous() {
 		"rendezvous://rendezvous.runtime.heroku.com:5000/rendezvous-dyno-ssh-ksecret-%s",
 		strings.TrimSpace(string(hostname)),
 	)
-	r := &Rendezvous{url}
-	r.connect()
+	r, err := NewRendezvous(url)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	r.Connect()
 }
 
 func spawnSSHD(username string) error {
@@ -47,7 +53,7 @@ func spawnSSHD(username string) error {
 	}
 
 	config := &SSHDConfig{
-		Port:           5000,
+		Port:           SSHD_PORT,
 		Username:       strings.TrimSpace(username),
 		ListenAddress:  "127.0.0.1",
 		AuthorizedKeys: authorizedKeys,
