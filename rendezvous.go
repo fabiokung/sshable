@@ -46,7 +46,7 @@ func (r *Rendezvous) Connect() error {
 func forward(reader net.Conn, writer net.Conn, done chan bool) error {
 	defer func() { done <- true }()
 
-	buf := make([]byte, 512)
+	buf := make([]byte, 32)
 	for {
 		n, err := reader.Read(buf)
 		if err != nil {
